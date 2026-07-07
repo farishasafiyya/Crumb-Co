@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crumb & Co. | Reports</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(255, 225, 180, 0.55), transparent 35%),
+                linear-gradient(135deg, #fff8ec, #f3e3cc, #ead2b4);
+            color: #5e3c23;
+            min-height: 100vh;
+        }
+body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+                linear-gradient(rgba(255, 248, 236, 0.78), rgba(234, 210, 180, 0.84)),
+                url("pics/pic3.jpeg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: saturate(1.08) brightness(1.03);
+            z-index: -2;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at top left, rgba(255, 225, 180, 0.35), transparent 35%),
+                radial-gradient(circle at bottom right, rgba(155, 107, 67, 0.18), transparent 38%);
+            z-index: -1;
+        }
+
+        .navbar {
+            background: rgba(155, 107, 67, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 20px rgba(91, 57, 30, 0.18);
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: white !important;
+        }
+
+        .nav-link {
+            color: #fff !important;
+            margin-left: 8px;
+            font-weight: 500;
+            padding: 9px 14px !important;
+            border-radius: 14px;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 232, 200, 0.22);
+            color: #fff8ec !important;
+        }
+
+        .nav-link.active {
+            background: #7c5637;
+            color: #fff8ec !important;
+            box-shadow: 0 6px 14px rgba(63, 39, 20, 0.25);
+        }
+
+        .page-header {
+            background: rgba(255, 253, 248, 0.9);
+            padding: 35px;
+            border-radius: 30px;
+            margin-top: 30px;
+            box-shadow: 0 15px 35px rgba(120, 85, 45, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::after {
+            content: "📊";
+            position: absolute;
+            right: 35px;
+            bottom: 8px;
+            font-size: 85px;
+            opacity: 0.16;
+        }
+
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            color: #7c5637;
+            font-size: 42px;
+        }
+
+        .glow-card {
+            background: rgba(255, 253, 248, 0.92);
+            border-radius: 25px;
+            padding: 25px;
+            height: 100%;
+            box-shadow: 0 12px 28px rgba(120, 85, 45, 0.14);
+            position: relative;
+            overflow: hidden;
+            transition: 0.35s ease;
+            cursor: pointer;
+        }
+
+        .glow-card::before {
+            content: "";
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            background: rgba(255, 208, 137, 0.45);
+            border-radius: 50%;
+            top: -45px;
+            right: -45px;
+            filter: blur(5px);
+        }
+
+        .glow-card:hover {
+            transform: translateY(-10px);
+            box-shadow:
+                0 18px 35px rgba(120, 85, 45, 0.22),
+                0 0 25px rgba(255, 202, 128, 0.75);
+        }
+
+        .icon-box {
+            width: 55px;
+            height: 55px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #c89f72, #9b6b43);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 26px;
+            margin-bottom: 18px;
+            box-shadow: 0 0 18px rgba(200, 159, 114, 0.75);
+            position: relative;
+        }
+
+        .glow-card h5,
+        .glow-card h2,
+        .glow-card p {
+            position: relative;
+        }
+
+        .glow-card h5 {
+            color: #9b6b43;
+            font-weight: 600;
+        }
+
+        .glow-card h2 {
+            color: #5e3c23;
+            font-weight: 700;
+        }
+
+        .mini-text {
+            font-size: 14px;
+            color: #9a7659;
+        }
+
+        .progress {
+            height: 8px;
+            border-radius: 20px;
+            background-color: #f3dfc3;
+            margin-top: 15px;
+            position: relative;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #9b6b43, #d8b18c);
+        }
+
+        .content-box {
+            background: rgba(255, 253, 248, 0.94);
+            border-radius: 28px;
+            padding: 25px;
+            box-shadow: 0 12px 28px rgba(120, 85, 45, 0.14);
+            height: 100%;
+        }
+
+        .content-box:hover {
+            box-shadow: 0 15px 32px rgba(120, 85, 45, 0.18);
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            color: #7c5637;
+            margin-bottom: 20px;
+        }
+
+        .sales-chart {
+            height: 250px;
+            display: flex;
+            align-items: end;
+            justify-content: space-around;
+            gap: 14px;
+            padding: 15px 15px 0;
+            border-left: 2px solid #e8c89f;
+            border-bottom: 2px solid #e8c89f;
+        }
+
+        .sales-item {
+            height: 100%;
+            width: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sales-bar {
+            width: 100%;
+            border-radius: 14px 14px 6px 6px;
+            background: linear-gradient(180deg, #c89f72, #9b6b43);
+            box-shadow: 0 8px 15px rgba(120, 85, 45, 0.18);
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .sales-bar::before {
+            content: attr(data-revenue);
+            position: absolute;
+            top: -38px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #7c5637;
+            color: #fff8ec;
+            padding: 6px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .sales-bar:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 22px rgba(120, 85, 45, 0.28);
+        }
+
+        .sales-bar:hover::before {
+            opacity: 1;
+        }
+
+        .sales-item span {
+            font-size: 13px;
+            color: #7a5b43;
+            font-weight: 600;
+        }
+
+        .category-donut {
+            width: 170px;
+            height: 170px;
+            margin: 15px auto 20px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #7c5637 0deg 144deg,
+                #9b6b43 144deg 252deg,
+                #c89f72 252deg 316deg,
+                #f0d7b6 316deg 360deg
+            );
+            box-shadow: 0 10px 22px rgba(120, 85, 45, 0.18);
+            position: relative;
+        }
+
+        .category-donut::after {
+            content: "100%";
+            width: 78px;
+            height: 78px;
+            background: #fffdf8;
+            color: #7c5637;
+            border-radius: 50%;
+            position: absolute;
+            inset: 0;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .category-legend {
+            display: grid;
+            gap: 9px;
+            font-size: 13px;
+            color: #7a5b43;
+        }
+
+        .category-legend div {
+            background: #fff1dc;
+            padding: 8px 10px;
+            border-radius: 13px;
+            transition: 0.3s;
+        }
+
+        .category-legend div:hover {
+            transform: translateX(5px);
+            background: #f3dfc3;
+        }
+
+        .category-legend span {
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            border-radius: 4px;
+            margin-right: 7px;
+        }
+
+        .insight-card {
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .insight-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .insight-icon {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .insight-value {
+            color: #9b6b43;
+            font-weight: 700;
+        }
+
+        .table thead {
+            background: #f0d7b6;
+            color: #5e3c23;
+        }
+
+        .table tbody tr {
+            transition: 0.25s;
+        }
+
+        .table tbody tr:hover {
+            background: #fff1dc;
+        }
+
+        .modal-content {
+            background: #fffdf8;
+            color: #5e3c23;
+            box-shadow: 0 18px 40px rgba(63, 39, 20, 0.28);
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            color: #7c5637;
+            font-size: 25px;
+        }
+
+        .btn-stay {
+            border: 1px solid #c89f72;
+            color: #7c5637;
+            background: #fff8ec;
+        }
+
+        .btn-stay:hover {
+            background: #fff1dc;
+            color: #5e3c23;
+        }
+
+        .btn-logout {
+            background: #9b6b43;
+            color: white;
+        }
+
+        .btn-logout:hover {
+            background: #7c5637;
+            color: white;
+        }
+
+        footer {
+            background: #9b6b43;
+            color: white;
+            text-align: center;
+            padding: 18px;
+            margin-top: 40px;
+        }
+
+        @media(max-width: 768px) {
+            .page-header {
+                text-align: center;
+                padding: 25px;
+            }
+
+            .page-header h1 {
+                font-size: 34px;
+            }
+
+            .page-header::after {
+                font-size: 60px;
+                right: 20px;
+            }
+
+            .sales-item {
+                width: 48px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard.html">Crumb & Co.</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarMenu">
+                <ul class="navbar-nav ms-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">
+                            <i class="bi bi-house-fill"></i> Dashboard
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.html">
+                            <i class="bi bi-cup-hot-fill"></i> Pastries
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="orders.html">
+                            <i class="bi bi-bag-check-fill"></i> Orders
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="reports.html">
+                            <i class="bi bi-bar-chart-fill"></i> Reports
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <div class="page-header">
+            <h1>Bakery Reports</h1>
+            <p class="mb-0">
+                View bakery sales performance, pastry popularity and monthly revenue insights.
+            </p>
+        </div>
+
+        <div class="row mt-4 g-4">
+
+            <div class="col-md-3">
+                <div class="glow-card">
+                    <div class="icon-box">
+                        <i class="bi bi-graph-up-arrow"></i>
+                    </div>
+                    <h5>Monthly Revenue</h5>
+                    <h2>RM 18,450</h2>
+                    <p class="mini-text">Total revenue this month</p>
+
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 88%;"></div>
+                    </div>
+                    <p class="mini-text mt-2">88% monthly target</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="glow-card">
+                    <div class="icon-box">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <h5>Customers</h5>
+                    <h2>420</h2>
+                    <p class="mini-text">Monthly customer visits</p>
+
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 76%;"></div>
+                    </div>
+                    <p class="mini-text mt-2">Growing steadily</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="glow-card">
+                    <div class="icon-box">
+                        <i class="bi bi-box-seam-fill"></i>
+                    </div>
+                    <h5>Items Sold</h5>
+                    <h2>1,245</h2>
+                    <p class="mini-text">Pastries sold this month</p>
+
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 91%;"></div>
+                    </div>
+                    <p class="mini-text mt-2">High demand</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="glow-card">
+                    <div class="icon-box">
+                        <i class="bi bi-award-fill"></i>
+                    </div>
+                    <h5>Top Product</h5>
+                    <h2>Croissant</h2>
+                    <p class="mini-text">Most profitable pastry</p>
+
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 95%;"></div>
+                    </div>
+                    <p class="mini-text mt-2">Customer favourite</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row mt-4 g-4">
+
+            <div class="col-lg-8">
+                <div class="content-box">
+                    <h3 class="section-title">Monthly Sales Trend</h3>
+
+                    <div class="sales-chart">
+                        <div class="sales-item">
+                            <div class="sales-bar" style="height:53%;" data-revenue="RM 9,800"></div>
+                            <span>Jan</span>
+                        </div>
+
+                        <div class="sales-item">
+                            <div class="sales-bar" style="height:61%;" data-revenue="RM 11,200"></div>
+                            <span>Feb</span>
+                        </div>
+
+                        <div class="sales-item">
+                            <div class="sales-bar" style="height:69%;" data-revenue="RM 12,650"></div>
+                            <span>Mar</span>
+                        </div>
+
+                        <div class="sales-item">
+                            <div class="sales-bar" style="height:75%;" data-revenue="RM 13,900"></div>
+                            <span>Apr</span>
+                        </div>
+
+                        <div class="sales-item">
+                            <div class="sales-bar" style="height:86%;" data-revenue="RM 15,800"></div>
+                            <span>May</span>
+                        </div>
+
+                        <div class="sales-item">
+                            <div class="sales-bar" style="height:100%;" data-revenue="RM 18,450"></div>
+                            <span>Jun</span>
+                        </div>
+                    </div>
+
+                    <p class="mini-text text-center mt-3">
+                        Current month revenue: <strong>RM 18,450</strong>
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="content-box">
+                    <h3 class="section-title">Sales by Category</h3>
+
+                    <div class="category-donut"></div>
+
+                    <div class="category-legend">
+                        <div><span style="background:#7c5637;"></span> Classic Pastry - 40%</div>
+                        <div><span style="background:#9b6b43;"></span> Sweet Pastry - 30%</div>
+                        <div><span style="background:#c89f72;"></span> Fruit Pastry - 18%</div>
+                        <div><span style="background:#f0d7b6;"></span> Cakes - 12%</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row mt-4 g-4">
+
+            <div class="col-md-4">
+                <div class="content-box insight-card">
+                    <div class="insight-icon">🥐</div>
+                    <h4 class="section-title">Best Selling Product</h4>
+                    <h3 class="insight-value">Butter Croissant</h3>
+                    <p class="mini-text">420 units sold this month</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="content-box insight-card">
+                    <div class="insight-icon">📈</div>
+                    <h4 class="section-title">Growth Rate</h4>
+                    <h3 class="insight-value">+12%</h3>
+                    <p class="mini-text">Compared with previous month</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="content-box insight-card">
+                    <div class="insight-icon">⭐</div>
+                    <h4 class="section-title">Customer Rating</h4>
+                    <h3 class="insight-value">4.9 / 5</h3>
+                    <p class="mini-text">Based on customer reviews</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="content-box mt-4">
+            <h3 class="section-title">Performance Summary</h3>
+
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Report Item</th>
+                            <th>Value</th>
+                            <th>Remark</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>Highest Sales Day</td>
+                            <td>Saturday</td>
+                            <td>Weekend pastry demand is highest</td>
+                        </tr>
+
+                        <tr>
+                            <td>Lowest Sales Day</td>
+                            <td>Monday</td>
+                            <td>Sales are slower after weekend</td>
+                        </tr>
+
+                        <tr>
+                            <td>Most Popular Product</td>
+                            <td>Butter Croissant</td>
+                            <td>Main contributor to monthly sales</td>
+                        </tr>
+
+                        <tr>
+                            <td>Most Popular Category</td>
+                            <td>Classic Pastry</td>
+                            <td>Customers prefer classic bakery items</td>
+                        </tr>
+
+                        <tr>
+                            <td>Monthly Growth</td>
+                            <td>+12%</td>
+                            <td>Revenue improved compared to last month</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        © 2026 Crumb & Co. Bakery System | Bakery sales reports.
+    </footer>
+
+    <div class="modal fade" id="logoutModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4">
+
+                <div class="modal-header border-0">
+                    <h5 class="modal-title">
+                        <i class="bi bi-box-arrow-right"></i>
+                        Logout Confirmation
+                    </h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    <div style="font-size:60px;">🥐</div>
+
+                    <h4 class="mt-3">Leave Crumb & Co.?</h4>
+
+                    <p class="text-muted">
+                        Are you sure you want to log out from the bakery management system?
+                    </p>
+                </div>
+
+                <div class="modal-footer border-0 justify-content-center">
+                    <button type="button" class="btn btn-stay rounded-pill px-4" data-bs-dismiss="modal">
+                        Stay Here
+                    </button>
+
+                    <button type="button" class="btn btn-logout rounded-pill px-4" onclick="logoutNow()">
+                        Logout
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function logoutNow() {
+            window.location.href = "index.html";
+        }
+    </script>
+
+</body>
+</html>

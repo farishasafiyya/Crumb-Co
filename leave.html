@@ -1,0 +1,2023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>EMS | Leave Management</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: #f3f6fb;
+      color: #263149;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font-family: inherit;
+    }
+
+    .wrapper {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================= */
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 270px;
+      height: 100vh;
+      padding: 25px 18px;
+      background: linear-gradient(180deg, #152747 0%, #203b68 100%);
+      color: white;
+      overflow-y: auto;
+      z-index: 1000;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 5px 10px 25px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      margin-bottom: 20px;
+    }
+
+    .logo-icon {
+      width: 46px;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: #4f83df;
+      color: white;
+      font-size: 24px;
+      box-shadow: 0 7px 18px rgba(79, 131, 223, 0.35);
+    }
+
+    .logo h2 {
+      font-size: 22px;
+      line-height: 1.1;
+      letter-spacing: 0.5px;
+    }
+
+    .logo p {
+      margin-top: 5px;
+      color: #b9c9e8;
+      font-size: 8px;
+      letter-spacing: 0.7px;
+      white-space: nowrap;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .menu-title {
+      margin: 19px 13px 8px;
+      color: #90a7ce;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .nav a {
+      display: block;
+      margin-bottom: 5px;
+      padding: 12px 14px;
+      border-radius: 9px;
+      color: #dce7fa;
+      text-decoration: none;
+      font-size: 13px;
+      transition: 0.25s ease;
+    }
+
+    .nav a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      transform: translateX(3px);
+    }
+
+    .nav a.active {
+      background: linear-gradient(90deg, #4677cf, #5b8be0);
+      color: white;
+      box-shadow: 0 7px 18px rgba(31, 82, 168, 0.3);
+    }
+
+    .logout {
+      margin-top: 22px;
+      padding-top: 17px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .logout a {
+      color: #ffd7d7;
+      cursor: pointer;
+    }
+
+    .logout a:hover {
+      background: rgba(226, 72, 72, 0.2);
+      color: white;
+    }
+
+    /* =========================
+       MAIN CONTENT
+    ========================= */
+
+    .main-content {
+      width: calc(100% - 270px);
+      min-height: 100vh;
+      margin-left: 270px;
+      padding: 30px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 25px;
+    }
+
+    .page-heading h1 {
+      color: #172b4d;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .page-heading p {
+      margin-top: 5px;
+      color: #7a8699;
+      font-size: 13px;
+    }
+
+    .admin-profile {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 8px 15px 8px 9px;
+      border-radius: 50px;
+      background: white;
+      box-shadow: 0 6px 20px rgba(25, 51, 91, 0.08);
+    }
+
+    .admin-avatar {
+      width: 41px;
+      height: 41px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #4677cf;
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .admin-profile strong {
+      display: block;
+      color: #263149;
+      font-size: 12px;
+    }
+
+    .admin-profile span {
+      display: block;
+      color: #8a94a6;
+      font-size: 9px;
+    }
+
+    /* =========================
+       SUMMARY CARDS
+    ========================= */
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .summary-card {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 120px;
+      padding: 22px;
+      border-radius: 15px;
+      background: white;
+      box-shadow: 0 7px 22px rgba(23, 43, 77, 0.07);
+      transition: 0.25s ease;
+    }
+
+    .summary-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(23, 43, 77, 0.12);
+    }
+
+    .summary-card::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: -80%;
+      width: 60%;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        #4f83df,
+        transparent
+      );
+      animation: cardLight 3.5s linear infinite;
+    }
+
+    @keyframes cardLight {
+      from {
+        left: -80%;
+      }
+
+      to {
+        left: 120%;
+      }
+    }
+
+    .summary-card p {
+      margin-bottom: 8px;
+      color: #8792a5;
+      font-size: 12px;
+    }
+
+    .summary-card h2 {
+      color: #172b4d;
+      font-size: 27px;
+    }
+
+    .summary-icon {
+      width: 51px;
+      height: 51px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      font-size: 23px;
+    }
+
+    .total-icon {
+      background: #e6efff;
+    }
+
+    .pending-icon {
+      background: #fff3d5;
+    }
+
+    .approved-icon {
+      background: #dcf7ea;
+    }
+
+    .rejected-icon {
+      background: #ffe3e3;
+    }
+
+    /* =========================
+       LEAVE PANEL
+    ========================= */
+
+    .leave-panel {
+      overflow: hidden;
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 7px 24px rgba(23, 43, 77, 0.07);
+    }
+
+    .panel-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 24px;
+      border-bottom: 1px solid #e9edf4;
+    }
+
+    .panel-top h2 {
+      color: #172b4d;
+      font-size: 18px;
+    }
+
+    .panel-top p {
+      margin-top: 4px;
+      color: #8a94a6;
+      font-size: 11px;
+    }
+
+    .apply-btn {
+      padding: 11px 17px;
+      border: none;
+      border-radius: 9px;
+      background: linear-gradient(90deg, #3568c5, #5083dc);
+      color: white;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(53, 104, 197, 0.25);
+      transition: 0.25s ease;
+    }
+
+    .apply-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 9px 20px rgba(53, 104, 197, 0.35);
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 12px;
+      padding: 17px 24px;
+      background: #f9fbfe;
+      border-bottom: 1px solid #e9edf4;
+    }
+
+    .search-input,
+    .status-filter {
+      height: 42px;
+      padding: 0 13px;
+      border: 1px solid #dce2eb;
+      border-radius: 8px;
+      background: white;
+      color: #38445a;
+      font-size: 12px;
+      outline: none;
+    }
+
+    .search-input {
+      flex: 1;
+    }
+
+    .status-filter {
+      width: 170px;
+    }
+
+    .search-input:focus,
+    .status-filter:focus {
+      border-color: #4f83df;
+      box-shadow: 0 0 0 3px rgba(79, 131, 223, 0.1);
+    }
+
+    /* =========================
+       TABLE
+    ========================= */
+
+    .table-container {
+      overflow-x: auto;
+      padding: 3px 24px 22px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 800px;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      padding: 17px 12px;
+      border-bottom: 1px solid #dfe5ed;
+      color: #7e899c;
+      font-size: 10px;
+      font-weight: 600;
+      text-align: left;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    tbody td {
+      padding: 17px 12px;
+      border-bottom: 1px solid #edf0f5;
+      color: #414c60;
+      font-size: 12px;
+      vertical-align: middle;
+    }
+
+    tbody tr {
+      transition: 0.2s ease;
+    }
+
+    tbody tr:hover {
+      background: #f8faff;
+    }
+
+    .employee {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .employee-avatar {
+      width: 39px;
+      height: 39px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border-radius: 50%;
+      color: white;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .sarah-avatar {
+      background: #8d67be;
+    }
+
+    .adam-avatar {
+      background: #4285c7;
+    }
+
+    .lisa-avatar {
+      background: #df8b3e;
+    }
+
+    .employee strong {
+      display: block;
+      color: #263149;
+      font-size: 12px;
+    }
+
+    .employee small {
+      display: block;
+      margin-top: 2px;
+      color: #9aa3b2;
+      font-size: 9px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 11px;
+      border-radius: 30px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .status::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .status-pending {
+      background: #fff1ce;
+      color: #ac7500;
+    }
+
+    .status-pending::before {
+      background: #df9b00;
+    }
+
+    .status-approved {
+      background: #dff7eb;
+      color: #138259;
+    }
+
+    .status-approved::before {
+      background: #16a06b;
+    }
+
+    .status-rejected {
+      background: #ffe2e2;
+      color: #c73f3f;
+    }
+
+    .status-rejected::before {
+      background: #dc4949;
+    }
+
+    .action-group {
+      display: flex;
+      gap: 7px;
+    }
+
+    .action-btn {
+      width: 34px;
+      height: 34px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .approve-btn {
+      background: #dcf7ea;
+      color: #16875d;
+    }
+
+    .approve-btn:hover {
+      background: #16875d;
+      color: white;
+    }
+
+    .reject-btn {
+      background: #ffe2e2;
+      color: #cb3e3e;
+    }
+
+    .reject-btn:hover {
+      background: #d94a4a;
+      color: white;
+    }
+
+    .view-btn {
+      background: #e5edff;
+      color: #3768c7;
+    }
+
+    .view-btn:hover {
+      background: #4677cf;
+      color: white;
+    }
+
+    .no-result {
+      display: none;
+      padding: 35px;
+      color: #8b95a7;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    /* =========================
+       MODAL
+    ========================= */
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(12, 24, 45, 0.65);
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 500px;
+      overflow: hidden;
+      border-radius: 17px;
+      background: white;
+      box-shadow: 0 25px 60px rgba(7, 19, 39, 0.3);
+      animation: modalOpen 0.25s ease;
+    }
+
+    @keyframes modalOpen {
+      from {
+        opacity: 0;
+        transform: translateY(-15px) scale(0.97);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 19px 22px;
+      border-bottom: 1px solid #e8edf3;
+    }
+
+    .modal-header h3 {
+      color: #172b4d;
+      font-size: 17px;
+    }
+
+    .close-btn {
+      width: 34px;
+      height: 34px;
+      border: none;
+      border-radius: 8px;
+      background: #f0f3f8;
+      color: #5f6b7c;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      padding: 22px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      color: #4f5a6d;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #dce2eb;
+      border-radius: 8px;
+      color: #344054;
+      font-size: 12px;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: #4f83df;
+      box-shadow: 0 0 0 3px rgba(79, 131, 223, 0.1);
+    }
+
+    textarea.form-control {
+      min-height: 85px;
+      resize: vertical;
+    }
+
+    .date-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 13px;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 16px 22px 21px;
+      border-top: 1px solid #e8edf3;
+    }
+
+    .cancel-btn,
+    .submit-btn,
+    .danger-btn {
+      padding: 10px 17px;
+      border: none;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .cancel-btn {
+      background: #eef1f6;
+      color: #566174;
+    }
+
+    .submit-btn {
+      background: #4677cf;
+      color: white;
+    }
+
+    .danger-btn {
+      background: #d84747;
+      color: white;
+    }
+
+    /* =========================
+       LOGOUT CONFIRMATION
+    ========================= */
+
+    .confirmation-modal {
+      max-width: 410px;
+      text-align: center;
+    }
+
+    .confirmation-content {
+      padding: 30px 27px 20px;
+    }
+
+    .confirmation-icon {
+      width: 67px;
+      height: 67px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 17px;
+      border-radius: 50%;
+      background: #ffe4e4;
+      color: #d74747;
+      font-size: 28px;
+    }
+
+    .confirmation-content h3 {
+      margin-bottom: 8px;
+      color: #172b4d;
+      font-size: 19px;
+    }
+
+    .confirmation-content p {
+      color: #7c8799;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .confirmation-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 5px 25px 27px;
+    }
+
+    .confirmation-buttons button {
+      min-width: 115px;
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    .toast {
+      position: fixed;
+      right: 25px;
+      bottom: 25px;
+      z-index: 5000;
+      display: none;
+      min-width: 270px;
+      padding: 14px 17px;
+      border-radius: 10px;
+      background: #1f3458;
+      color: white;
+      box-shadow: 0 12px 30px rgba(17, 38, 72, 0.25);
+      font-size: 11px;
+    }
+
+    .toast.show {
+      display: block;
+      animation: toastOpen 0.3s ease;
+    }
+
+    @keyframes toastOpen {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 1100px) {
+      .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 850px) {
+      .sidebar {
+        position: relative;
+        width: 230px;
+      }
+
+      .main-content {
+        width: calc(100% - 230px);
+        margin-left: 230px;
+        padding: 22px;
+      }
+
+      .logo p {
+        display: none;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .wrapper {
+        display: block;
+      }
+
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+
+      .main-content {
+        width: 100%;
+        margin-left: 0;
+        padding: 18px;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar,
+      .panel-top {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .admin-profile {
+        display: none;
+      }
+
+      .apply-btn {
+        width: 100%;
+      }
+
+      .filter-bar {
+        flex-direction: column;
+      }
+
+      .status-filter {
+        width: 100%;
+      }
+
+      .date-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="logo">
+      <div class="logo-icon">⬢</div>
+
+      <div>
+        <h2>EMS</h2>
+        <p>EMPLOYEE MANAGEMENT SYSTEM</p>
+      </div>
+    </div>
+
+    <div class="nav">
+
+      <a href="dashboard.html">🏠 Dashboard</a>
+
+      <div class="menu-title">Employee Management</div>
+
+      <a href="employees.html">👥 Employees</a>
+      <a href="#">🏢 Departments</a>
+      <a href="#">💼 Positions</a>
+
+      <div class="menu-title">Operations</div>
+
+      <a href="attendance.html">🕒 Attendance</a>
+
+      <a href="leave.html" class="active">
+        📅 Leave Management
+      </a>
+
+      <a href="#">💰 Payroll</a>
+      <a href="#">🎓 Training</a>
+
+      <div class="menu-title">Reports</div>
+
+      <a href="#">📊 Reports</a>
+
+      <div class="menu-title">System</div>
+
+      <a href="#">⚙ Settings</a>
+
+      <div class="logout">
+        <a onclick="openFirstLogoutConfirmation()">
+          🚪 Logout
+        </a>
+      </div>
+
+    </div>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+
+      <div class="page-heading">
+        <h1>Leave Management</h1>
+
+        <p>
+          Manage employee leave applications and approval status.
+        </p>
+      </div>
+
+      <div class="admin-profile">
+
+        <div class="admin-avatar">AD</div>
+
+        <div>
+          <strong>Admin User</strong>
+          <span>Administrator</span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- SUMMARY -->
+    <section class="summary-grid">
+
+      <div class="summary-card">
+
+        <div>
+          <p>Total Requests</p>
+          <h2 id="totalCount">3</h2>
+        </div>
+
+        <div class="summary-icon total-icon">
+          📋
+        </div>
+
+      </div>
+
+      <div class="summary-card">
+
+        <div>
+          <p>Pending Requests</p>
+          <h2 id="pendingCount">1</h2>
+        </div>
+
+        <div class="summary-icon pending-icon">
+          ⏳
+        </div>
+
+      </div>
+
+      <div class="summary-card">
+
+        <div>
+          <p>Approved Requests</p>
+          <h2 id="approvedCount">1</h2>
+        </div>
+
+        <div class="summary-icon approved-icon">
+          ✅
+        </div>
+
+      </div>
+
+      <div class="summary-card">
+
+        <div>
+          <p>Rejected Requests</p>
+          <h2 id="rejectedCount">1</h2>
+        </div>
+
+        <div class="summary-icon rejected-icon">
+          ❌
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- LEAVE REQUEST PANEL -->
+    <section class="leave-panel">
+
+      <div class="panel-top">
+
+        <div>
+          <h2>Leave Requests</h2>
+
+          <p>
+            Review, approve or reject employee leave applications.
+          </p>
+        </div>
+
+        <button class="apply-btn" onclick="openApplyLeaveModal()">
+          ＋ Apply Leave
+        </button>
+
+      </div>
+
+      <!-- SEARCH AND FILTER -->
+      <div class="filter-bar">
+
+        <input
+          type="text"
+          class="search-input"
+          id="searchInput"
+          placeholder="Search employee name..."
+          onkeyup="filterLeaveTable()"
+        >
+
+        <select
+          class="status-filter"
+          id="statusFilter"
+          onchange="filterLeaveTable()"
+        >
+          <option value="all">All Status</option>
+          <option value="pending">Pending</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+        </select>
+
+      </div>
+
+      <!-- TABLE -->
+      <div class="table-container">
+
+        <table id="leaveTable">
+
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Leave Type</th>
+              <th>Start</th>
+              <th>End</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody id="leaveTableBody">
+
+            <!-- SARAH -->
+            <tr data-name="sarah" data-status="pending">
+
+              <td>
+
+                <div class="employee">
+
+                  <div class="employee-avatar sarah-avatar">
+                    SA
+                  </div>
+
+                  <div>
+                    <strong>Sarah</strong>
+                    <small>EMP001</small>
+                  </div>
+
+                </div>
+
+              </td>
+
+              <td>Annual Leave</td>
+              <td>2 Nov 2026</td>
+              <td>4 Nov 2026</td>
+
+              <td>
+                <span class="status status-pending">
+                  Pending
+                </span>
+              </td>
+
+              <td>
+
+                <div class="action-group">
+
+                  <button
+                    class="action-btn approve-btn"
+                    title="Approve"
+                    onclick="changeLeaveStatus(this, 'Approved')"
+                  >
+                    ✔
+                  </button>
+
+                  <button
+                    class="action-btn reject-btn"
+                    title="Reject"
+                    onclick="changeLeaveStatus(this, 'Rejected')"
+                  >
+                    ✖
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            <!-- ADAM -->
+            <tr data-name="adam" data-status="approved">
+
+              <td>
+
+                <div class="employee">
+
+                  <div class="employee-avatar adam-avatar">
+                    AD
+                  </div>
+
+                  <div>
+                    <strong>Adam</strong>
+                    <small>EMP002</small>
+                  </div>
+
+                </div>
+
+              </td>
+
+              <td>Medical Leave</td>
+              <td>30 Oct 2026</td>
+              <td>31 Oct 2026</td>
+
+              <td>
+                <span class="status status-approved">
+                  Approved
+                </span>
+              </td>
+
+              <td>
+
+                <button
+                  class="action-btn view-btn"
+                  title="View leave details"
+                  onclick="viewLeaveDetails(
+                    'Adam',
+                    'EMP002',
+                    'Medical Leave',
+                    '30 Oct 2026',
+                    '31 Oct 2026',
+                    'Approved',
+                    'Medical appointment and recovery.'
+                  )"
+                >
+                  👁
+                </button>
+
+              </td>
+
+            </tr>
+
+            <!-- LISA -->
+            <tr data-name="lisa" data-status="rejected">
+
+              <td>
+
+                <div class="employee">
+
+                  <div class="employee-avatar lisa-avatar">
+                    LI
+                  </div>
+
+                  <div>
+                    <strong>Lisa</strong>
+                    <small>EMP003</small>
+                  </div>
+
+                </div>
+
+              </td>
+
+              <td>Emergency Leave</td>
+              <td>5 Nov 2026</td>
+              <td>5 Nov 2026</td>
+
+              <td>
+                <span class="status status-rejected">
+                  Rejected
+                </span>
+              </td>
+
+              <td>
+
+                <button
+                  class="action-btn view-btn"
+                  title="View leave details"
+                  onclick="viewLeaveDetails(
+                    'Lisa',
+                    'EMP003',
+                    'Emergency Leave',
+                    '5 Nov 2026',
+                    '5 Nov 2026',
+                    'Rejected',
+                    'Urgent personal family matter.'
+                  )"
+                >
+                  👁
+                </button>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+        <div class="no-result" id="noResult">
+          No leave request was found.
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<!-- =========================
+     APPLY LEAVE MODAL
+========================= -->
+
+<div class="modal-overlay" id="applyLeaveModal">
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+
+      <h3>Apply Leave</h3>
+
+      <button class="close-btn" onclick="closeApplyLeaveModal()">
+        ×
+      </button>
+
+    </div>
+
+    <form id="leaveForm">
+
+      <div class="modal-body">
+
+        <div class="form-group">
+
+          <label>Employee Name</label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="employeeName"
+            placeholder="Enter employee name"
+            required
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Employee ID</label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="employeeId"
+            placeholder="Example: EMP004"
+            required
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Leave Type</label>
+
+          <select
+            class="form-control"
+            id="leaveType"
+            required
+          >
+            <option value="">Select leave type</option>
+            <option value="Annual Leave">Annual Leave</option>
+            <option value="Medical Leave">Medical Leave</option>
+            <option value="Emergency Leave">Emergency Leave</option>
+            <option value="Maternity Leave">Maternity Leave</option>
+            <option value="Unpaid Leave">Unpaid Leave</option>
+          </select>
+
+        </div>
+
+        <div class="date-row">
+
+          <div class="form-group">
+
+            <label>Start Date</label>
+
+            <input
+              type="date"
+              class="form-control"
+              id="startDate"
+              required
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label>End Date</label>
+
+            <input
+              type="date"
+              class="form-control"
+              id="endDate"
+              required
+            >
+
+          </div>
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Reason</label>
+
+          <textarea
+            class="form-control"
+            id="leaveReason"
+            placeholder="Enter the reason for leave"
+            required
+          ></textarea>
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="cancel-btn"
+          onclick="closeApplyLeaveModal()"
+        >
+          Cancel
+        </button>
+
+        <button type="submit" class="submit-btn">
+          Submit Request
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+<!-- =========================
+     VIEW DETAILS MODAL
+========================= -->
+
+<div class="modal-overlay" id="detailsModal">
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+
+      <h3>Leave Request Details</h3>
+
+      <button class="close-btn" onclick="closeDetailsModal()">
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div class="form-group">
+        <label>Employee</label>
+        <div id="detailEmployee"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Employee ID</label>
+        <div id="detailId"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Leave Type</label>
+        <div id="detailType"></div>
+      </div>
+
+      <div class="date-row">
+
+        <div class="form-group">
+          <label>Start Date</label>
+          <div id="detailStart"></div>
+        </div>
+
+        <div class="form-group">
+          <label>End Date</label>
+          <div id="detailEnd"></div>
+        </div>
+
+      </div>
+
+      <div class="form-group">
+        <label>Status</label>
+        <div id="detailStatus"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Reason</label>
+        <div id="detailReason"></div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+      <button class="submit-btn" onclick="closeDetailsModal()">
+        Close
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =========================
+     FIRST LOGOUT CONFIRMATION
+========================= -->
+
+<div class="modal-overlay" id="firstLogoutModal">
+
+  <div class="modal-box confirmation-modal">
+
+    <div class="confirmation-content">
+
+      <div class="confirmation-icon">
+        🚪
+      </div>
+
+      <h3>Confirm Logout</h3>
+
+      <p>
+        Are you sure you want to log out from the Employee Management
+        System?
+      </p>
+
+    </div>
+
+    <div class="confirmation-buttons">
+
+      <button
+        class="cancel-btn"
+        onclick="closeFirstLogoutConfirmation()"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="danger-btn"
+        onclick="openFinalLogoutConfirmation()"
+      >
+        Continue
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =========================
+     FINAL LOGOUT CONFIRMATION
+========================= -->
+
+<div class="modal-overlay" id="finalLogoutModal">
+
+  <div class="modal-box confirmation-modal">
+
+    <div class="confirmation-content">
+
+      <div class="confirmation-icon">
+        ⚠
+      </div>
+
+      <h3>Final Confirmation</h3>
+
+      <p>
+        Please confirm again. You will be redirected to the login page
+        after logging out.
+      </p>
+
+    </div>
+
+    <div class="confirmation-buttons">
+
+      <button
+        class="cancel-btn"
+        onclick="closeFinalLogoutConfirmation()"
+      >
+        Go Back
+      </button>
+
+      <button
+        class="danger-btn"
+        onclick="confirmLogout()"
+      >
+        Yes, Logout
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span id="toastMessage">
+    Action completed successfully.
+  </span>
+</div>
+
+<script>
+  /* =========================
+     APPLY LEAVE
+  ========================= */
+
+  function openApplyLeaveModal() {
+    document
+      .getElementById("applyLeaveModal")
+      .classList.add("show");
+  }
+
+  function closeApplyLeaveModal() {
+    document
+      .getElementById("applyLeaveModal")
+      .classList.remove("show");
+  }
+
+  document
+    .getElementById("leaveForm")
+    .addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const employeeName = document
+        .getElementById("employeeName")
+        .value
+        .trim();
+
+      const employeeId = document
+        .getElementById("employeeId")
+        .value
+        .trim();
+
+      const leaveType = document
+        .getElementById("leaveType")
+        .value;
+
+      const startDateValue = document
+        .getElementById("startDate")
+        .value;
+
+      const endDateValue = document
+        .getElementById("endDate")
+        .value;
+
+      const leaveReason = document
+        .getElementById("leaveReason")
+        .value
+        .trim();
+
+      if (new Date(endDateValue) < new Date(startDateValue)) {
+        showToast("End date cannot be earlier than start date.");
+        return;
+      }
+
+      const startDate = formatDate(startDateValue);
+      const endDate = formatDate(endDateValue);
+
+      const initials = employeeName
+        .split(" ")
+        .map(function(word) {
+          return word.charAt(0);
+        })
+        .join("")
+        .substring(0, 2)
+        .toUpperCase();
+
+      const newRow = document.createElement("tr");
+
+      newRow.dataset.name = employeeName.toLowerCase();
+      newRow.dataset.status = "pending";
+      newRow.dataset.reason = leaveReason;
+
+      newRow.innerHTML = `
+        <td>
+          <div class="employee">
+
+            <div
+              class="employee-avatar"
+              style="background:#3b9a8a;"
+            >
+              ${initials}
+            </div>
+
+            <div>
+              <strong>${escapeHTML(employeeName)}</strong>
+              <small>${escapeHTML(employeeId)}</small>
+            </div>
+
+          </div>
+        </td>
+
+        <td>${escapeHTML(leaveType)}</td>
+        <td>${startDate}</td>
+        <td>${endDate}</td>
+
+        <td>
+          <span class="status status-pending">
+            Pending
+          </span>
+        </td>
+
+        <td>
+          <div class="action-group">
+
+            <button
+              class="action-btn approve-btn"
+              title="Approve"
+              onclick="changeLeaveStatus(this, 'Approved')"
+            >
+              ✔
+            </button>
+
+            <button
+              class="action-btn reject-btn"
+              title="Reject"
+              onclick="changeLeaveStatus(this, 'Rejected')"
+            >
+              ✖
+            </button>
+
+          </div>
+        </td>
+      `;
+
+      document
+        .getElementById("leaveTableBody")
+        .appendChild(newRow);
+
+      this.reset();
+
+      closeApplyLeaveModal();
+      updateSummary();
+      filterLeaveTable();
+
+      showToast("New leave request submitted successfully.");
+    });
+
+  function formatDate(dateValue) {
+    const date = new Date(dateValue + "T00:00:00");
+
+    return date.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "short",
+      year: "numeric"
+    });
+  }
+
+  /* =========================
+     APPROVE AND REJECT
+  ========================= */
+
+  function changeLeaveStatus(button, newStatus) {
+    const row = button.closest("tr");
+
+    const employeeName = row.querySelector(
+      ".employee strong"
+    ).textContent;
+
+    const employeeId = row.querySelector(
+      ".employee small"
+    ).textContent;
+
+    const leaveType = row.children[1].textContent;
+    const startDate = row.children[2].textContent;
+    const endDate = row.children[3].textContent;
+
+    const reason =
+      row.dataset.reason ||
+      "No additional reason was provided.";
+
+    const newStatusLower = newStatus.toLowerCase();
+
+    row.dataset.status = newStatusLower;
+
+    row.children[4].innerHTML = `
+      <span class="status status-${newStatusLower}">
+        ${newStatus}
+      </span>
+    `;
+
+    row.children[5].innerHTML = `
+      <button
+        class="action-btn view-btn"
+        title="View leave details"
+        onclick="showRowDetails(this)"
+      >
+        👁
+      </button>
+    `;
+
+    row.dataset.employee = employeeName;
+    row.dataset.employeeId = employeeId;
+    row.dataset.leaveType = leaveType;
+    row.dataset.startDate = startDate;
+    row.dataset.endDate = endDate;
+
+    updateSummary();
+    filterLeaveTable();
+
+    showToast(
+      employeeName +
+      "'s leave request has been " +
+      newStatusLower +
+      "."
+    );
+  }
+
+  function showRowDetails(button) {
+    const row = button.closest("tr");
+
+    const employeeName =
+      row.dataset.employee ||
+      row.querySelector(".employee strong").textContent;
+
+    const employeeId =
+      row.dataset.employeeId ||
+      row.querySelector(".employee small").textContent;
+
+    const leaveType =
+      row.dataset.leaveType ||
+      row.children[1].textContent;
+
+    const startDate =
+      row.dataset.startDate ||
+      row.children[2].textContent;
+
+    const endDate =
+      row.dataset.endDate ||
+      row.children[3].textContent;
+
+    const status =
+      row.dataset.status.charAt(0).toUpperCase() +
+      row.dataset.status.slice(1);
+
+    const reason =
+      row.dataset.reason ||
+      "No additional reason was provided.";
+
+    viewLeaveDetails(
+      employeeName,
+      employeeId,
+      leaveType,
+      startDate,
+      endDate,
+      status,
+      reason
+    );
+  }
+
+  /* =========================
+     DETAILS
+  ========================= */
+
+  function viewLeaveDetails(
+    employee,
+    employeeId,
+    leaveType,
+    startDate,
+    endDate,
+    status,
+    reason
+  ) {
+    document.getElementById("detailEmployee").textContent =
+      employee;
+
+    document.getElementById("detailId").textContent =
+      employeeId;
+
+    document.getElementById("detailType").textContent =
+      leaveType;
+
+    document.getElementById("detailStart").textContent =
+      startDate;
+
+    document.getElementById("detailEnd").textContent =
+      endDate;
+
+    document.getElementById("detailReason").textContent =
+      reason;
+
+    document.getElementById("detailStatus").innerHTML = `
+      <span class="status status-${status.toLowerCase()}">
+        ${status}
+      </span>
+    `;
+
+    document
+      .getElementById("detailsModal")
+      .classList.add("show");
+  }
+
+  function closeDetailsModal() {
+    document
+      .getElementById("detailsModal")
+      .classList.remove("show");
+  }
+
+  /* =========================
+     SEARCH AND FILTER
+  ========================= */
+
+  function filterLeaveTable() {
+    const searchValue = document
+      .getElementById("searchInput")
+      .value
+      .toLowerCase()
+      .trim();
+
+    const statusValue = document
+      .getElementById("statusFilter")
+      .value;
+
+    const rows = document.querySelectorAll(
+      "#leaveTableBody tr"
+    );
+
+    let visibleRows = 0;
+
+    rows.forEach(function(row) {
+      const employeeName = row.dataset.name;
+      const employeeStatus = row.dataset.status;
+
+      const matchName =
+        employeeName.includes(searchValue);
+
+      const matchStatus =
+        statusValue === "all" ||
+        employeeStatus === statusValue;
+
+      if (matchName && matchStatus) {
+        row.style.display = "";
+        visibleRows++;
+      } else {
+        row.style.display = "none";
+      }
+    });
+
+    document.getElementById("noResult").style.display =
+      visibleRows === 0 ? "block" : "none";
+  }
+
+  /* =========================
+     SUMMARY COUNT
+  ========================= */
+
+  function updateSummary() {
+    const rows = document.querySelectorAll(
+      "#leaveTableBody tr"
+    );
+
+    let pending = 0;
+    let approved = 0;
+    let rejected = 0;
+
+    rows.forEach(function(row) {
+      if (row.dataset.status === "pending") {
+        pending++;
+      }
+
+      if (row.dataset.status === "approved") {
+        approved++;
+      }
+
+      if (row.dataset.status === "rejected") {
+        rejected++;
+      }
+    });
+
+    document.getElementById("totalCount").textContent =
+      rows.length;
+
+    document.getElementById("pendingCount").textContent =
+      pending;
+
+    document.getElementById("approvedCount").textContent =
+      approved;
+
+    document.getElementById("rejectedCount").textContent =
+      rejected;
+  }
+
+  /* =========================
+     DOUBLE LOGOUT CONFIRMATION
+  ========================= */
+
+  function openFirstLogoutConfirmation() {
+    document
+      .getElementById("firstLogoutModal")
+      .classList.add("show");
+  }
+
+  function closeFirstLogoutConfirmation() {
+    document
+      .getElementById("firstLogoutModal")
+      .classList.remove("show");
+  }
+
+  function openFinalLogoutConfirmation() {
+    closeFirstLogoutConfirmation();
+
+    document
+      .getElementById("finalLogoutModal")
+      .classList.add("show");
+  }
+
+  function closeFinalLogoutConfirmation() {
+    document
+      .getElementById("finalLogoutModal")
+      .classList.remove("show");
+  }
+
+  function confirmLogout() {
+    window.location.href = "login.html";
+  }
+
+  /* =========================
+     TOAST
+  ========================= */
+
+  function showToast(message) {
+    const toast = document.getElementById("toast");
+
+    document.getElementById("toastMessage").textContent =
+      message;
+
+    toast.classList.add("show");
+
+    setTimeout(function() {
+      toast.classList.remove("show");
+    }, 2800);
+  }
+
+  /* Prevent HTML injection from form input */
+  function escapeHTML(value) {
+    return value
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  /* Close modal when clicking outside the modal box */
+  window.addEventListener("click", function(event) {
+    const modalIds = [
+      "applyLeaveModal",
+      "detailsModal",
+      "firstLogoutModal",
+      "finalLogoutModal"
+    ];
+
+    modalIds.forEach(function(id) {
+      const modal = document.getElementById(id);
+
+      if (event.target === modal) {
+        modal.classList.remove("show");
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
